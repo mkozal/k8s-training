@@ -1,0 +1,77 @@
+### vm host
+
+virsh list --all
+virsh start <vm_name>
+
+ssh-copy-id student@master
+ssh student@master
+
+### wspólne dla każdego node'a ###
+
+sudo sh -c 'cat >> /etc/hosts << EOF
+10.10.1.10 master
+10.10.1.20 node1
+10.10.1.30 node2
+EOF
+'
+
+sudo apt update # DODATKOWO
+sudo apt install -y docker.io
+sudo apt -y install curl apt-transport-https
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt update
+#poniższe pod containerd 1.6.12
+sudo apt install -y kubelet=1.25.0-00 kubeadm=1.25.0-00
+#sudo sysctl net.ipv4.ip_forward=1
+
+sudo sh -c 'cat >> /etc/sysctl.d/kubernetes.conf << EOF
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+net.ipv4.ip_forward = 1
+EOF
+'
+sudo sysctl --system
+
+### koniec wspólnych ####
+
+### master ###
+sudo kubeadm init
+# odnotowac output (komenda pod join node'ow)
+### koniec master ####
+
+
+### worker ####
+#sudo kubeadm join… (jak z outputu)
+### koniec worker ###
+
+### useful stuff
+
+scp student@master:~/.kube/config ~/.kube/
+echo 'source <(kubectl completion bash)' >>~/.bashrc
+echo 'alias k=kubectl' >>~/.bashrc
+echo 'complete -o default -F __start_kubectl k' >>~/.bashrc
+. ~/.bashrc # . is an alias of source
+
+
+### pod network
+kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
+
+### zaawansowany setup certów
+
+#kubeadm init # https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-certs/#kubelet-serving-certs
+
+apiVersion: kubeadm.k8s.io/v1beta3
+kind: ClusterConfiguration
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+serverTLSBootstrap: true
+
+kubectl get csr
+kubectl certificate approve
+
+
+//
+kubeadm join 10.10.1.10:6443 --token 5yyr5z.cc7kmle2mn099lwd \
+        --discovery-token-ca-cert-hash sha256:6e2e2099f91503318d984ad79acdde1e9e89f0113238b647bef372507d71f492
