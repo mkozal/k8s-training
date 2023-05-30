@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: envs-cm
+data:
+  envvar1: value1
+  envvar2: value2
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: files-cm
+data:
+  innyplik.log: |
+    testpliku2
+  test.txt: |
+    testpliku
+---
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  creationTimestamp: null
+  labels:
+    run: app1
+  name: app1
+
+spec:
+  selector:
+    matchLabels:
+      run: app1
+  replicas: 10
+  strategy:
+    type: RollingUpdate
+
+  template:
+
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: app1
+      name: app1
+    spec:
+      containers:
+      - image: nginx:1.19
+        name: app1
+        resources: {} # CPU & memory: request (minimum) & limit (maximum)
+        env:
+          - name: test
+            valueFrom:
+              configMapKeyRef:
+                name: envs-cm
+                key: envvar1
+        envFrom:
+          - configMapRef:
+              name: envs-cm
+        volumeMounts:
+        - name: cm-volume
+          mountPath: /usr/nginx/www/html/test
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      volumes:
+      - name: cm-volume
+        configMap:
+        # Provide the name of the ConfigMap containing the files you want
+        # to add to the container
+          name: files-cm
+status: {}
