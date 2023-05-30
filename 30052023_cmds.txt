@@ -17,3 +17,5 @@ ssh student@master # node1, node2
 
 #k8s
 kubectl get deployments.apps -A # -A alias dla --all-namespaces
+
+kubectl -n dev get pod app1 -o yaml # podgląd pełnego info o chodzącym podzie
