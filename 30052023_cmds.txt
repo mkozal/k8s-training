@@ -13,3 +13,7 @@ ssh student@master # node1, node2
 
 #ctrl+b + n/p (przechodzenie pomiędzy sesjami
 #ctrl+b + x (ubicie okna)
+
+
+#k8s
+kubectl get deployments.apps -A # -A alias dla --all-namespaces
