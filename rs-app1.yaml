@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+
+metadata:
+  creationTimestamp: null
+  labels:
+    run: app1
+  name: app1
+
+spec:
+  selector:
+    matchLabels:
+      run: app1
+  replicas: 1
+
+  template:
+
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: app1
+      name: app1
+    spec:
+      containers:
+      - image: httpd:2.4
+        name: app1
+        resources: {} # CPU & memory: request (minimum) & limit (maximum)
+        env:
+          - name: test
+            value: fake
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+status: {}
