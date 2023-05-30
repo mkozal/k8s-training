@@ -1,6 +1,14 @@
-task:
+task 1:
 1. healthcheck_app1.yaml jako punkt wyjścia
 2. zmieniamy metodę readiness na httpGet
 3. poprawiamy volumeMount na ścieżkę taką na jakiej działa nginx
 4. modyfikując zawartość configmapy poleceniem `kubectl edit cm <nazwa>` możemy obserwować zmianę statusu Ready
 5. test curlem: `curl 10.10.1.10:30080/ścieżka`
+
+
+task 2:
+0. preqrequirements: zainstalowany nginx ingress controller (polecenie w komendach z 30.05.)
+1. healthcheck_app1.yaml + ingress.yaml jako punkt wyjścia
+2. kopiujemy app1 jako app2 + zmieniamy zawartosc plików ConfigMapy
+3. dodajemy regułkę Ingress (lub osobny zasób ingress) który na podstawie ścieżki kieruje ruch na app2
+3. testujemy czy path-based routing nginx ingress controllera działa jak należy
