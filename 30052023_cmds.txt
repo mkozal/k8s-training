@@ -40,6 +40,6 @@ kubectl top pod
 # csr z sortowanie po wieku
 k get csr --sort-by=.metadata.creationTimestamp
 
-
-# healthchecks
-# https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+kubectl get events
+kubectl get events --field-selector involvedObject.name=app1-6dcb886bc4-x89mp
+kubectl alpha events pod app1-6dcb886bc4-x89mp
