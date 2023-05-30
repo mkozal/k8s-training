@@ -1,0 +1,16 @@
+https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+
+timeline healthchecków:
+
+<start kontenera>                     OK - Ready 1/1                (fail)              (fail) (fail) FAIL - Ready 0/1
+     0 < ---- delay ---- > 1 <-- timeout --> 1. <-- period --> 2 <- to-> 2. <- period-> 3 <->   4   <-> 5
+
+Fail fast:
+failure=1 -> success 3-5
+
+Ready fast:
+success=1 -> failure 3-5
+
+
+Flapping:
+success=1 -> failure=1
