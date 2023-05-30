@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  creationTimestamp: null
+  labels:
+    run: app1
+  name: app1
+  namespace: dev
+
+spec:
+  selector:
+    matchLabels:
+      run: app1
+  replicas: 10
+  strategy:
+    type: RollingUpdate
+
+  template:
+
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: app1
+      name: app1
+      namespace: dev
+    spec:
+      containers:
+      - image: httpd:2.4
+        name: app1
+        resources: {} # CPU & memory: request (minimum) & limit (maximum)
+        env:
+          - name: test
+            value: fake
+          - name: test2
+            value: wartosc
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+status: {}
