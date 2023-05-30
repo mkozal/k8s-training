@@ -34,3 +34,6 @@ kubectl create configmap example-cm --from-literal=envvar1=value1 --dry-run=clie
 # bieżące zużycie zasobów
 kubectl top nodes
 kubectl top pod
+
+# csr z sortowanie po wieku
+k get csr --sort-by=.metadata.creationTimestamp
