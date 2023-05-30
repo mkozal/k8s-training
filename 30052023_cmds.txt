@@ -25,3 +25,7 @@ kubectl -n dev get pod app1 -o yaml # podgląd pełnego info o chodzącym podzie
 
 kubectl -n dev scale replicaset --replicas=3 app1
 kubectl -n dev edit replicasets.apps app1 
+
+# bieżące zużycie zasobów
+kubectl top nodes
+kubectl top pod
