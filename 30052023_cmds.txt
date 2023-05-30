@@ -43,3 +43,7 @@ k get csr --sort-by=.metadata.creationTimestamp
 kubectl get events
 kubectl get events --field-selector involvedObject.name=app1-6dcb886bc4-x89mp
 kubectl alpha events pod app1-6dcb886bc4-x89mp
+
+
+#nginx ingress controller installation
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.7.1/deploy/static/provider/baremetal/deploy.yaml
