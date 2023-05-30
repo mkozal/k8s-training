@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  creationTimestamp: null
+  name: test
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - backend:
+          service:
+            name: app1
+            port:
+              number: 80
+        path: /test1
+        pathType: Exact # może też być Prefix
+status:
+  loadBalancer: {}
