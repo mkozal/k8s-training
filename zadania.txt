@@ -2,4 +2,5 @@ task:
 1. healthcheck_app1.yaml jako punkt wyjścia
 2. zmieniamy metodę readiness na httpGet
 3. poprawiamy volumeMount na ścieżkę taką na jakiej działa nginx
-4. modyfikując zawartość configmapy poleceniem `kubectl edit cm <nazwa>` możemy obserwować zmianę statusu Ready 
+4. modyfikując zawartość configmapy poleceniem `kubectl edit cm <nazwa>` możemy obserwować zmianę statusu Ready
+5. test curlem: `curl 10.10.1.10:30080/ścieżka`
