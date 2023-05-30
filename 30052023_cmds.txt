@@ -1,4 +1,5 @@
 # https://access.altkom.cloud/cgi-bin/dostepb.cgi?power=on
+# YAML multiline block cheatsheet https://yaml-multiline.info/
 
 virsh list --all
 virsh start master
