@@ -1,1 +1,6 @@
 # https://access.altkom.cloud/cgi-bin/dostepb.cgi?power=on
+
+virsh list --all
+virsh start master
+virsh start node1
+virsh start node2
