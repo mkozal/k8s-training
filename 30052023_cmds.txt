@@ -39,3 +39,7 @@ kubectl top pod
 
 # csr z sortowanie po wieku
 k get csr --sort-by=.metadata.creationTimestamp
+
+
+# healthchecks
+# https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
