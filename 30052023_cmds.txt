@@ -27,7 +27,8 @@ kubectl -n dev scale replicaset --replicas=3 app1
 kubectl -n dev edit replicasets.apps app1 
 
 
-kubectl create configmap example-cm --from-literal=envvar1=value1 --dry-run=client -o yaml
+kubectl create configmap example-cm --from-literal=envvar1=value1 --dry-run=client -o yaml\
+kubectl create configmap example-cm --from-literal=envvar1=value1 --dry-run=client -o yaml | kubectl apply -f -
 
 # bieżące zużycie zasobów
 kubectl top nodes
