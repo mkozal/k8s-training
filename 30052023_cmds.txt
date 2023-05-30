@@ -4,3 +4,12 @@ virsh list --all
 virsh start master
 virsh start node1
 virsh start node2
+
+#tmux
+tmux
+#ctrl+b + c (nowa sesja)
+ssh student@master # node1, node2
+#ctrl+b + :rename-window <nazwa>
+
+#ctrl+b + n/p (przechodzenie pomiędzy sesjami
+#ctrl+b + x (ubicie okna)
