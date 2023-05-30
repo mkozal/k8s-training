@@ -1,0 +1,122 @@
+10:05:42 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	Adres i porty potrzebne do połączenia to:
+	IP 195.167.158.220 i porty 6100 ( dla noVNC czyli dostępu przez WWW ) oraz od 51000 do 57399 dla SSH.
+	
+	Powinno wystarczyć odblokowanie połączenia wychodzącego do powyższych w ich sieci.
+10:16:21 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	Przerwa do 10:30
+10:54:31 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	virsh start <nazwa_VM>
+10:56:35 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	ctrl+b -> c (nowe okno), p/n (przechodzenie pomiędzy), x (kill)
+10:56:55 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	Powyższe do tmux
+11:43:24 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	docker —version
+	containerd --version
+	kubeadm version
+11:45:48 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	Przerwa do 12
+12:02:30 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	https://github.com/mkozal/k8s-training
+12:26:02 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	sudo kubeadm init --config kubeadm-tls.yaml 
+	
+	kubectl get nodes
+12:30:03 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	sudo apt install containerd # aktualizacja do 1.6.12 (zgodna z k8s 1.25)
+12:43:46 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	kubectl get node -o wide
+12:47:13 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	kubectl api-resources
+12:51:58 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	kubectl create namespace demo-ns
+12:52:44 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	kubectl create namespace demo-ns --dry-run=client
+12:55:37 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	kubectl create namespace demo-ns --dry-run=client -o yaml > demo-ns.yaml
+12:57:41 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	k get po --namespace kube-system
+12:58:20 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	k get po --all-namespaces
+13:01:57 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	Przerwa obiadowa 13-14
+13:04:45 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	kubeadm token create --print-join-command
+14:09:57 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	mkdir -p $HOME/.kube
+	  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+	  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+14:10:48 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
+14:23:43 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	kubectl config set-context --current --namespace=NAMESPACE
+14:31:22 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	kubectl run app1 --image=httpd:2.4
+14:34:31 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	k get pod --all-namespaces -o wide
+14:40:42 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	kubectl logs -n kube-system weave-net-hch4h -c weave-npc
+14:46:36 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	kubectl port-forward app1 8080:80
+14:49:26 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	kubectl expose pod app1 --port 80
+14:54:39 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	Przerwa do 15:05
+15:07:39 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	https://github.com/kubernetes/dashboard
+15:08:22 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	kubectl proxy &
+15:14:09 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	apiVersion: v1
+	kind: ServiceAccount
+	metadata:
+	  name: admin-user
+	  namespace: kubernetes-dashboard
+	---
+	
+	apiVersion: rbac.authorization.k8s.io/v1
+	kind: ClusterRoleBinding
+	metadata:
+	  name: admin-user
+	roleRef:
+	  apiGroup: rbac.authorization.k8s.io
+	  kind: ClusterRole
+	  name: cluster-admin
+	subjects:
+	- kind: ServiceAccount
+	  name: admin-user
+	  namespace: kubernetes-dashboard
+15:14:39 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	kubectl -n kubernetes-dashboard create token admin-user
+15:16:47 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	ssh -p 54231 root@access.altkom.cloud -L 8001:localhost:8001
+15:27:03 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	sudo apt install yamllint
+15:30:01 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	kubectl -n mkozal run app1 --image=httpd:2.4 --dry-run=client -o yaml > pod-app1.yaml
+15:34:22 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	kubectl create ns <nazwa>
+15:47:06 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	kubectl expose pod app1 --port 80 --type NodePort
+15:51:48 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	kubectl explain service.spec.ports
+15:53:16 From Trener1@akademia.altkom.pl Trener1@akademia.altkom.pl to Everyone:
+	apiVersion: v1
+	kind: Service
+	metadata:
+	  creationTimestamp: null
+	  labels:
+	    run: app1
+	  name: app1
+	spec:
+	  ports:
+	  - port: 80
+	    protocol: TCP
+	    targetPort: 80
+	    nodePort: 30080
+	  selector:
+	    run: app1
+	  type: NodePort
+	status:
+	  loadBalancer: {}
