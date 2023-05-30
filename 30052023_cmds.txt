@@ -47,3 +47,7 @@ kubectl alpha events pod app1-6dcb886bc4-x89mp
 
 #nginx ingress controller installation
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.7.1/deploy/static/provider/baremetal/deploy.yaml
+
+#ingress creation
+kubectl create ingress test --dry-run=client -o yaml --default-backend=app1:80 --rule=/test=app1:80
+
