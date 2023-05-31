@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  creationTimestamp: null
+  labels:
+    run: app2
+  name: app2
+
+spec:
+  selector:
+    matchLabels:
+      run: app2
+  replicas: 10
+  strategy:
+    type: RollingUpdate
+
+  template:
+
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: app2
+      name: app2
+    spec:
+      containers:
+      - image: nginx:1.19
+        name: app2
+        resources: {} # CPU & memory: request (minimum) & limit (maximum)
+        readinessProbe:
+          httpGet:
+            port: nginx
+            path: /healthcheck
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 80
+        volumeMounts:
+        - name: cm-volume
+          mountPath: /usr/share/nginx/html
+        ports:
+        - containerPort: 80
+          name: nginx
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      volumes:
+      - name: cm-volume
+        #configMap:
+        persistentVolumeClaim:
+          claimName: pvc1
+        # Provide the name of the ConfigMap containing the files you want
+        # to add to the container
+        #name: files-cm2
+        #          path: /opt/hostpath
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    run: app2
+  name: app2
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    run: app2
+  type: ClusterIP
+status:
+  loadBalancer: {}
