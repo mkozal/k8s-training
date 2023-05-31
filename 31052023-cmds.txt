@@ -1,3 +1,8 @@
 kubectl create job testjob --image=busybox --dry-run=client -o yaml -- sh -c "sleep 30"
 
 # https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+
+
+# https://github.com/kubernetes-sigs/metrics-server
+kubectl top pods
+kubectl top nodes
