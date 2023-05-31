@@ -20,5 +20,9 @@ openssl req -x509 -sha256 -newkey rsa:4096 -keyout ca.key -out ca.crt -days 356 
 openssl req -new -newkey rsa:4096 -keyout server.key -out server.csr -nodes -subj "/CN=${HOST}"
 openssl x509 -req -sha256 -days 365 -in server.csr -CA ca.crt -CAkey ca.key -set_serial 01 -out server.crt -extfile <(printf "subjectAltName=DNS:${HOST},DNS:www.${HOST}")
 
+# client cert
+openssl req -new -newkey rsa:4096 -keyout client.key -out client.csr -nodes -subj '/CN=curl-training'
+openssl x509 -req -sha256 -days 365 -in client.csr -CA ca.crt -CAkey ca.key -set_serial 02 -out client.crt
+
 
 
