@@ -11,5 +11,14 @@ kubectl create secret tls ${CERT_NAME} --key ${KEY_FILE} --cert ${CERT_FILE} # z
 # kubectl create secret generic selfsigned-generic --from-file=tls.crt=server.crt --from-file=tls.key=server.key
 openssl x509 -in server.crt -text -noout # wyświetlanie zawartości certyfikatu
 
+# CA-based Mutual Auth (both server and client certs)
+# https://kubernetes.github.io/ingress-nginx/examples/PREREQUISITES/
+
+# root cert
+openssl req -x509 -sha256 -newkey rsa:4096 -keyout ca.key -out ca.crt -days 356 -nodes -subj '/CN=k8s training CA' 
+# server cert
+openssl req -new -newkey rsa:4096 -keyout server.key -out server.csr -nodes -subj "/CN=${HOST}"
+openssl x509 -req -sha256 -days 365 -in server.csr -CA ca.crt -CAkey ca.key -set_serial 01 -out server.crt -extfile <(printf "subjectAltName=DNS:${HOST},DNS:www.${HOST}")
+
 
 
