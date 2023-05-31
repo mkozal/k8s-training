@@ -1,0 +1,10 @@
+# https://kubernetes.github.io/ingress-nginx/user-guide/tls/
+
+# Self-signed (no chain) server cert
+KEY_FILE=server.key
+CERT_FILE=server.crt
+CERT_NAME=selfsigned-tls
+HOST=master
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${KEY_FILE} -out ${CERT_FILE} -subj "/CN=${HOST}/O=${HOST}" -addext "subjectAltName = DNS:${HOST}" # self-signed (generacja klucza, podpisanie samego siebie, output do plików)
+kubectl create secret tls ${CERT_NAME} --key ${KEY_FILE} --cert ${CERT_FILE} # zapisanie do secretu k8s do użytku
+openssl x509 -in server.crt -text -noout # wyświetlanie zawartości certyfikatu
