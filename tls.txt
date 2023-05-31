@@ -30,4 +30,6 @@ curl -vk https://master:30472/test1
         # weryfikacja serwerowego         # kliencki zeby serwer nam zaufał
 curl -v --cacert certs/ca.crt --key certs/client.key --cert certs/client.crt https://master:30472/test1
 
-
+# for mutual authentication between pods (and visualization possible)
+# Service Mesh -> istio (de facto standard), Linkerd (quick to setup)
+# https://linkerd.io/2.13/getting-started/
