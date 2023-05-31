@@ -1,0 +1,58 @@
+student@master:~$ cat ingress-mtls.yaml 
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  creationTimestamp: null
+  name: test
+  annotations:
+    # Path rewrite
+    nginx.ingress.kubernetes.io/rewrite-target: /$2 # 2nd regex capture group from node1/test1 rule
+    # Enable client certificate authentication
+    nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
+    # Create the secret containing the trusted ca certificates
+    nginx.ingress.kubernetes.io/auth-tls-secret: "default/server-and-ca-tls"
+    # Specify the verification depth in the client certificates chain
+    nginx.ingress.kubernetes.io/auth-tls-verify-depth: "1"
+    # Specify an error page to be redirected to verification errors
+    # nginx.ingress.kubernetes.io/auth-tls-error-page: "http://www.mysite.com/error-cert.html"
+    # Specify if certificates are passed to upstream server
+    nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - master
+      secretName: server-and-ca-tls
+    - hosts:
+        - node1
+      secretName: node1-tls
+  rules:
+  - host: master
+    http:
+      paths:
+      - backend:
+          service:
+            name: app1
+            port:
+              number: 80
+        path: /test1
+        pathType: Exact # może też być Prefix
+      - backend:
+          service:
+            name: app2
+            port:
+              number: 80
+        path: /test2
+        pathType: Exact # może też być Prefix
+  - host: node1
+    http:
+      paths:
+      - backend:
+          service:
+            name: app2
+            port:
+              number: 80
+        path: /test1($|/)(.*) # match ending or slash, then all the valuable rest of the path
+        pathType: Exact # może też być Prefix
+status:
+  loadBalancer: {}
